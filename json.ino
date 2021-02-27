@@ -1,17 +1,17 @@
 void set_json(String payload)
 {
-  StaticJsonDocument<400> filter;
+  StaticJsonDocument<100> filter;
   filter[curency]["15m"] = true;
-  filter[curency]["symbol"] = true;
+  //filter[curency]["symbol"] = true;
 
-  StaticJsonDocument<800> doc;
+  StaticJsonDocument<100> doc;
   deserializeJson(doc, payload, DeserializationOption::Filter(filter));
 
   JsonObject obj = doc.as<JsonObject>();
 
   //serializeJsonPretty(doc, payload);
 
-  curencySymbol     = obj[curency]["symbol"].as<char*>();
+  //curencySymbol     = obj[curency]["symbol"].as<char*>();
   price             = obj[curency]["15m"].as<int>() ;
 
   Serial.print(curencySymbol);

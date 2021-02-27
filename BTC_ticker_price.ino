@@ -34,6 +34,19 @@ ESP8266WebServer server(80);
 
 ESP8266WiFiMulti WiFiMulti;
 
+/* NTP client */
+#include <TimeLib.h>
+#include <WiFiUdp.h>
+static const char ntpServerName[] = "cz.pool.ntp.org";
+const int timeZone = 1;     // Central European Time
+WiFiUDP Udp;
+unsigned int localPort = 8888;  // local port to listen for UDP packets
+time_t getNtpTime();
+void digitalClockDisplay();
+void printDigits(int digits);
+void sendNTPpacket(IPAddress &address);
+/* NTP client konec */
+
 String http_adress      = "https://blockchain.info/ticker";
 String curencySymbol    = "$";
 String curency          = "USD";
@@ -72,10 +85,24 @@ void setup() {
   server.onNotFound(handleNotFound);
   server.begin();
   Serial.println("HTTP server started");
+
+  Udp.begin(localPort);
+  Serial.print("Local port: ");
+  Serial.println(Udp.localPort());
+  Serial.println("waiting for sync");
+  setSyncProvider(getNtpTime);
+  setSyncInterval(150);
 }
+
+time_t prevDisplay = 0;
 
 void loop() {
   server.handleClient();
+
+  if (now() != prevDisplay) {
+    set_display();
+    prevDisplay = now();
+  }
 
   /* Pripojeni k burze */
   if (sent_request_time < millis()) {
