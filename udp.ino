@@ -4,16 +4,6 @@ void digitalClockDisplay()
 
   display.setCursor(80, 0);
 
-  //svetelnost displaye
-  /*
-  if (hour() > 19 && hour() < 7)
-  {
-    display.dim(true);
-  } else {
-    display.dim(false);
-  }
-  */
-
   if (hour() < 10) {
     Serial.print('0');
     display.print('0');

@@ -21,6 +21,7 @@
     .fw-bolder{font-weight: bolder;}
     .pt-3{padding-top: 8px;}
     .mb-3{margin-bottom: 8px;}
+    .mb-4{margin-bottom: 16px;}
     .border{border:1px solid #212529;}
     .rounded,.btn,.card{border-radius: 3px;}
     .text-center{text-align: center;}
@@ -42,15 +43,19 @@
 
     <div class="container pt-3">
 
-        <meta http-equiv="refresh" content="5; url=http://192.168.1.1">
-        <a class="btn mb-3" href="/setConnect/">SETTINGS WiFi</a>
-        <div class="card text-center ">
+        <!--<meta http-equiv="refresh" content="5; url=http://192.168.1.1">-->
+        <a class="btn mb-3" href="/setConnect/">SET WiFi</a>
+        <div class="card text-center mb-4">
             <div class="card-header bg-dark">WiFi conection status</div>
             <div class="card-body alert-danger text-center">
                 <div class="fw-bolder">Not connected!</div> Please setting WiFi.
             </div>
-            <div class="card-body alert-success text-center">Connected to <div class="fw-bolder">PODA_6417</div>Reload after 5 seconds...
-            </div>
+            <div class="card-body alert-success text-center">Connected to <div class="fw-bolder">PODA_6417</div>Reload after 5 seconds...</div>
+        </div>
+        
+        <div class="card text-center ">
+            <div class="card-header bg-dark">blockchain.info/ticker</div>
+            <div class="card-body alert-success text-center">BTC/USD<div class="fw-bolder">$123456</div>Reload after 10 seconds...</div>
         </div>
 
 
@@ -58,16 +63,16 @@
         <form class="border rounded p-2 bg-dark" method="post" enctype="application/x-www-form-urlencoded" action="/postform/">
             <div class="mb-3">
                 <label for="ssid" class="form-label">Your WiFi name</label>
-                <input type="ssid" class="form-control" id="ssid" placeholder="My_WiFi">
+                <input type="text" class="form-control" id="ssid" name="ssid" placeholder="My_WiFi">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Your WiFi password</label>
-                <input type="password" class="form-control" id="password" placeholder="My_WiFi_Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="My_WiFi_Password">
             </div>
             <input class="btn btn-warning" type="submit" value="Save">
         </form>
 
-        <meta http-equiv="refresh" content="5; url=http://192.168.1.1">
+        <!--<meta http-equiv="refresh" content="5; url=http://192.168.1.1">-->
         <a class="btn mb-3" href="/">BACK</a>
         <div class="alert alert-success text-center " role="alert">WiFi settings saved.<br>Redirect to main page after 5 seconds or click back button.</div>
         
