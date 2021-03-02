@@ -95,13 +95,19 @@ void setup() {
 }
 
 time_t prevDisplay = 0;
-
+int restartEsp     = 0; // Když je 20 spatnych pokusu, restartuj ESP.
 void loop() {
   server.handleClient();
 
   if (now() != prevDisplay) {
     set_display();
     prevDisplay = now();
+  }
+
+  // Pokud 20x neuspesne stahne JSON, restaruj ESP8266
+  if(restartEsp > 20){
+    Serial.println("Restart ESP");
+    ESP.restart();
   }
 
   /* Pripojeni k burze */
