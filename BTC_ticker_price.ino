@@ -53,8 +53,9 @@ String curency          = "USD";
 String crypto           = "BTC";
 int price               = 0;
 
-unsigned int timer              = 10000;//600000; //600s // 10min
+unsigned int timer              = 10000;//600000; //600s // 10s
 unsigned long sent_request_time = millis();
+unsigned long restart_time      = millis();
 
 void setup() {
   Serial.begin(115200);
@@ -105,7 +106,7 @@ void loop() {
   }
 
   // Pokud 20x neuspesne stahne JSON, restaruj ESP8266
-  if(restartEsp > 20){
+  if (restartEsp > 20) {
     Serial.println("Restart ESP");
     ESP.restart();
   }
@@ -123,6 +124,18 @@ void loop() {
       sent_request_time = millis() + timer;
     }
 
+  }
+
+  // Pokud neni pripojena wifi restartuj za 20 * 10s
+  if ((WiFiMulti.run() != WL_CONNECTED)) {
+    if (restart_time < millis()) {
+      restartEsp++;
+      Serial.println("WIFI DISCONNECTED - restartESP will be > 20");
+      Serial.print("Restart ticker count: ");
+      Serial.println(restartEsp);
+      Serial.println("");
+      restart_time = millis() + timer;
+    }
   }
 
 }
