@@ -26,7 +26,6 @@ const char *password = APPSK;
 const int led = LED_BUILTIN;
 ESP8266WebServer server(80);
 
-
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 #include <ESP8266HTTPClient.h>
@@ -47,6 +46,20 @@ void printDigits(int digits);
 void sendNTPpacket(IPAddress &address);
 /* NTP client konec */
 
+/* EEPROM - Ulozeni SSID a PSWD do pameti*/
+#include <EEPROM.h>
+int eeAddress = 1;
+struct LoginWiFiObject {
+  String ssid;
+  String pswd;
+};
+
+String wssid;
+String wpswd;
+
+LoginWiFiObject lWo;
+/* EEPROM - Ulozeni SSID a PSWD do pameti - konec */
+
 String http_adress      = "https://blockchain.info/ticker";
 String curencySymbol    = "$";
 String curency          = "USD";
@@ -59,6 +72,12 @@ unsigned long restart_time      = millis();
 
 void setup() {
   Serial.begin(115200);
+  while (!Serial) {}
+  Serial.println("Serial.begin 115200");
+  delay(1000);
+  
+  EEPROM.begin(512);
+  
   display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
   display.setTextSize(3);
   display.setTextColor(SSD1306_WHITE); // Draw white text
@@ -67,6 +86,8 @@ void setup() {
   //WiFi.mode(WIFI_OFF);
   //delay(500);
   WiFi.mode(WIFI_STA);
+  eepromFirstStartInicialize();
+  WiFiMulti.addAP(wssid.c_str(), wpswd.c_str());
   delay(500);
 
   Serial.println("Pripojeni k wifi:");

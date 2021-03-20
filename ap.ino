@@ -3,7 +3,9 @@ String baseHtmlStart  = "<!DOCTYPE html> <html lang=\"en\"> <meta charset=\"utf-
                         + css + "</head><body class=\"bg-secondary\"> <nav class=\"navbar bg-dark\"> <a class=\"navbar-brand\" href=\"/\">BTC Ticker</a> <span class=\"navbar-text\"> - version: 1.0.0</span> </nav> <div class=\"container pt-3\">";
 
 const String baseHtmlEnd = "<\/div><\/body><\/html>";
-const String postForms ="<a class=\"btn mb-3\" href=\"/\">BACK</a> <form class=\"border rounded p-2 bg-dark\" method=\"post\" enctype=\"application/x-www-form-urlencoded\" action=\"/postform/\"> <div class=\"mb-3\"> <label for=\"ssid\" class=\"form-label\">Your WiFi name</label> <input type=\"text\" class=\"form-control\" id=\"ssid\" name=\"ssid\" placeholder=\"My_WiFi\"> </div> <div class=\"mb-3\"> <label for=\"password\" class=\"form-label\">Your WiFi password</label> <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"My_WiFi_Password\"> </div> <input class=\"btn btn-warning\" type=\"submit\" value=\"Save\"> </form>";
+String postFormsA ="<a class=\"btn mb-3\" href=\"/\">BACK</a> <form class=\"border rounded p-2 bg-dark\" method=\"post\" enctype=\"application/x-www-form-urlencoded\" action=\"/postform/\"> <div class=\"mb-3\"> <label for=\"ssid\" class=\"form-label\">Your WiFi name</label> <input type=\"text\" class=\"form-control\" id=\"ssid\" name=\"ssid\" value=\"";
+String postFromsB ="\"> </div> <div class=\"mb-3\"> <label for=\"password\" class=\"form-label\">Your WiFi password</label> <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" value=\"";
+String postFormsC ="\"> </div> <input class=\"btn btn-warning\" type=\"submit\" value=\"Save\"> </form>";
 
 void handleRoot() {
 
@@ -25,7 +27,8 @@ void handleRoot() {
 
 void handleSetConnect()
 {
-  server.send(200, "text/html", baseHtmlStart + postForms + baseHtmlEnd);
+  eepromGet();
+  server.send(200, "text/html", baseHtmlStart + postFormsA + wssid + postFromsB + wpswd + postFormsC + baseHtmlEnd);
 }
 
 void handleForm() {
@@ -41,8 +44,9 @@ void handleForm() {
 
     String wssid = server.arg(0);
     String wpswd = server.arg(1);
-    Serial.println(wssid);
-    Serial.println(wpswd);
+
+    eepromPut(wssid,wpswd);
+    eepromGet();
 
     WiFiMulti.addAP(wssid.c_str(), wpswd.c_str());
     WiFiMulti.run();
