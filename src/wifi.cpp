@@ -1,3 +1,14 @@
+#include "wifi.h"
+#include "json.h"
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClientSecureBearSSL.h>
+
+extern ESP8266WiFiMulti WiFiMulti;
+extern String http_adress;
+extern String payload;
+
 void connect_wifi()
 {
   if ((WiFiMulti.run() == WL_CONNECTED)) {
